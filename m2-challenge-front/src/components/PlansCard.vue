@@ -4,7 +4,12 @@
       <h1>Internet</h1>
       <p>Selecione um plano de internet para continuar</p>
       <div v-for="item in internetInfo" :key="item.id">
-        <button v-on:click="getInternetPrice(item.price)">
+        <button
+          v-on:click="
+            addToCart(item.price, item.value, item.category),
+              getInternetPrice(item.price)
+          "
+        >
           {{ `${item.value} MEGA` }}
           <br />
           {{ `R$ ${item.price}` }}
@@ -14,10 +19,10 @@
     </div>
     <div>
       <h1>Fixo</h1>
-      <p>Agora escolha seu pacote de internet fixo</p>
+      <p>Agora escolha seu pacote de telefone fixo</p>
       <div v-for="item in phoneInfo" :key="item.id">
         <button
-          v-on:click="getPhonePrice(item.price)"
+          v-on:click="addToCart(item.price, item.value, item.category)"
           :disabled="internetPrice === 0"
         >
           {{ `${item.value.toUpperCase()} BRASIL` }}
@@ -32,7 +37,7 @@
       <p>Selecione um plano de tv para finalizar</p>
       <div v-for="item in tvInfo" :key="item.id">
         <button
-          v-on:click="getTvPrice(item.price)"
+          v-on:click="addToCart(item.price, item.value, item.category)"
           :disabled="internetPrice === 0"
         >
           {{ `${item.value}` }}
@@ -42,7 +47,15 @@
         </button>
       </div>
     </div>
-    <h1>Total: {{ totalPrice }}</h1>
+    <div>
+      <h1>Cart</h1>
+      <div v-for="(item, index) in cart" :key="index">
+        <button v-on:click="removeFromCart(index)">
+          {{ item.itemCategory }}
+          {{ `R$ ${item.itemPrice}` }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -55,8 +68,6 @@ export default {
       phoneInfo: [],
       tvInfo: [],
       internetPrice: 0,
-      phonePrice: 0,
-      tvPrice: 0,
       cart: [],
     };
   },
@@ -79,17 +90,35 @@ export default {
 
     getInternetPrice(price) {
       this.internetPrice = price;
-      console.log(this.internetPrice);
     },
 
-    getPhonePrice(price) {
-      this.phonePrice = price;
-      console.log(this.phonePrice);
+    addToCart(price, name, category) {
+      if (this.cart.length === 3) return;
+
+      if (category === "internet") {
+        category = "Plano de Internet - ";
+      }
+      if (category === "phone") {
+        category = "Plano de Telefone - ";
+      }
+      if (category === "tv") {
+        category = "Plano de Televisão - ";
+      }
+
+      price = price.toFixed(2);
+
+      const item = {
+        itemPrice: price,
+        itemName: name,
+        itemCategory: category,
+      };
+      this.cart.push(item);
     },
 
-    getTvPrice(price) {
-      this.tvPrice = price;
-      console.log(this.tvPrice);
+    removeFromCart(index) {
+      console.log(index);
+      this.cart.splice(index);
+      console.log(this.cart);
     },
   },
 
@@ -99,11 +128,7 @@ export default {
     this.getTvInfo();
   },
 
-  computed: {
-    totalPrice() {
-      return (this.internetPrice + this.phonePrice + this.tvPrice).toFixed(2);
-    },
-  },
+  computed: {},
 };
 </script>
 
