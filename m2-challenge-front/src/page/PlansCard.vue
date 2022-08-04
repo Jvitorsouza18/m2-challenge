@@ -9,10 +9,11 @@
             addToCart(item.price, item.value, item.category),
               getInternetPrice(item.price)
           "
+          :disabled="buttonDisables('internet')"
         >
           {{ `${item.value} MEGA` }}
           <br />
-          {{ `R$ ${item.price}` }}
+          {{ `R$ ${item.price.toFixed(2)}` }}
           +DETALHES
         </button>
       </div>
@@ -23,11 +24,11 @@
       <div v-for="item in phoneInfo" :key="item.id">
         <button
           v-on:click="addToCart(item.price, item.value, item.category)"
-          :disabled="internetPrice === 0"
+          :disabled="internetPrice === 0 || buttonDisables('phone')"
         >
           {{ `${item.value.toUpperCase()} BRASIL` }}
           <br />
-          {{ `R$ ${item.price}` }}
+          {{ `R$ ${item.price.toFixed(2)}` }}
           +DETALHES
         </button>
       </div>
@@ -38,11 +39,11 @@
       <div v-for="item in tvInfo" :key="item.id">
         <button
           v-on:click="addToCart(item.price, item.value, item.category)"
-          :disabled="internetPrice === 0"
+          :disabled="internetPrice === 0 || buttonDisables('tv')"
         >
           {{ `${item.value}` }}
           <br />
-          {{ `R$ ${item.price}` }}
+          {{ `R$ ${item.price.toFixed(2)}` }}
           +DETALHES
         </button>
       </div>
@@ -56,7 +57,7 @@
           {{ `R$ ${item.itemPrice}` }}
         </button>
       </div>
-      <div v-if="cart.length !== 0">
+      <div v-if="cart.length <= 0">
         <p>Taxa de instalação Grátis</p>
         <h3>Total: {{ `R$ ${totalPrice}/mês` }}</h3>
       </div>
@@ -74,10 +75,15 @@ export default {
       tvInfo: [],
       internetPrice: 0,
       cart: [],
+      categoryArray: [],
     };
   },
 
   methods: {
+    buttonDisables(type) {
+      return this.categoryArray.includes(type);
+    },
+
     async getInternetInfo() {
       const plansInfo = await fetchAPI();
       this.internetInfo = plansInfo.internet;
@@ -99,15 +105,16 @@ export default {
 
     addToCart(price, name, category) {
       if (this.cart.length === 3) return;
+      let categoryLabel = "";
 
       if (category === "internet") {
-        category = "Plano de Internet - ";
+        categoryLabel = "Plano de Internet - ";
       }
       if (category === "phone") {
-        category = "Plano de Telefone - ";
+        categoryLabel = "Plano de Telefone - ";
       }
       if (category === "tv") {
-        category = "Plano de Televisão - ";
+        categoryLabel = "Plano de Televisão - ";
       }
 
       price = price.toFixed(2);
@@ -115,13 +122,21 @@ export default {
       const item = {
         itemPrice: price,
         itemName: name,
-        itemCategory: category,
+        itemCategory: categoryLabel,
+        itemType: category,
       };
       this.cart.push(item);
+      this.categoryArray.push(item.itemType);
     },
 
     removeFromCart(index) {
-      this.cart.splice(index);
+      const removedItemType = this.cart[index].itemType;
+      const removeIndex = this.categoryArray.findIndex(
+        (item) => item === removedItemType
+      );
+      this.categoryArray.splice(removeIndex, 1);
+
+      this.cart.splice(index, 1);
     },
   },
 
