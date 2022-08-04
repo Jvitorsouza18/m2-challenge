@@ -49,11 +49,16 @@
     </div>
     <div>
       <h1>Cart</h1>
+      <p v-if="cart.length === 0">Carrinho está vazio</p>
       <div v-for="(item, index) in cart" :key="index">
         <button v-on:click="removeFromCart(index)">
           {{ item.itemCategory }}
           {{ `R$ ${item.itemPrice}` }}
         </button>
+      </div>
+      <div v-if="cart.length !== 0">
+        <p>Taxa de instalação Grátis</p>
+        <h3>Total: {{ `R$ ${totalPrice}/mês` }}</h3>
       </div>
     </div>
   </div>
@@ -116,9 +121,7 @@ export default {
     },
 
     removeFromCart(index) {
-      console.log(index);
       this.cart.splice(index);
-      console.log(this.cart);
     },
   },
 
@@ -128,7 +131,16 @@ export default {
     this.getTvInfo();
   },
 
-  computed: {},
+  computed: {
+    totalPrice() {
+      const initialValue = 0;
+      const finalPrice = this.cart.reduce(
+        (acc = 0, curr) => acc + +curr.itemPrice,
+        initialValue
+      );
+      return finalPrice.toFixed(2);
+    },
+  },
 };
 </script>
 
