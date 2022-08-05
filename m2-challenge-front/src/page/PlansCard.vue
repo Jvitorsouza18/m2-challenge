@@ -186,7 +186,54 @@ export default {
   height: 100vh;
 
   @media (max-width: 680px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     flex-flow: column nowrap;
+    width: 100%;
+    height: 100%;
+
+    .container-left {
+      @include fastDisplay(flex-start, column, nowrap);
+      width: 100%;
+      height: 100%;
+
+      .plans-container {
+        @include fastDisplay(flex-start, column, nowrap);
+        height: 100%;
+        width: 100%;
+        margin: 10%;
+      }
+      .card {
+        width: 100%;
+        height: 50%;
+        padding: 5%;
+
+        &.card-content {
+          @include fastDisplay(space-evenly, column, wrap);
+          .card-box {
+            height: 50%;
+            @include fastDisplay(space-evenly, column, wrap);
+            .internet-card {
+              width: 40%;
+
+              height: 45%;
+            }
+          }
+        }
+
+        .phone-card {
+          width: 40%;
+          padding: 10px;
+          height: 45%;
+        }
+
+        .tv-card {
+          width: 40%;
+          height: 30%;
+        }
+      }
+    }
   }
 
   h1 {
@@ -245,14 +292,14 @@ export default {
     }
 
     .cart-card {
-      width: 50%;
-      height: 15%;
+      width: 40%;
+      height: 10%;
       margin: 5%;
     }
 
     .checkout-content {
       position: absolute;
-      top: 80%;
+      top: 84%;
       right: 20%;
     }
   }
