@@ -28,6 +28,7 @@
           <button
             v-for="item in phoneInfo"
             :key="item.id"
+            class="phone-card"
             v-on:click="addToCart(item.price, item.value, item.category)"
             :disabled="internetPrice === 0 || buttonDisables('phone')"
           >
@@ -42,6 +43,7 @@
           <button
             v-for="item in tvInfo"
             :key="item.id"
+            class="tv-card"
             v-on:click="addToCart(item.price, item.value, item.category)"
             :disabled="internetPrice === 0 || buttonDisables('tv')"
           >
@@ -52,20 +54,23 @@
         </div>
       </div>
     </section>
-    <section class="container-right">
-      <div>
-        <h1>Cart</h1>
-        <p v-if="cart.length === 0">Carrinho está vazio</p>
-        <div v-for="(item, index) in cart" :key="index">
-          <button v-on:click="removeFromCart(index)">
-            {{ item.itemCategory }}
-            {{ `R$ ${item.itemPrice}` }}
-          </button>
-        </div>
-        <div v-if="cart.length > 0">
-          <p>Taxa de instalação Grátis</p>
-          <h3>Total: {{ `R$ ${totalPrice}/mês` }}</h3>
-        </div>
+    <section class="container-right cart">
+      <h1 class="cart-h1">Cart</h1>
+      <p v-if="cart.length === 0">Carrinho está vazio</p>
+
+      <button
+        v-for="(item, index) in cart"
+        :key="index"
+        v-on:click="removeFromCart(index)"
+        class="cart-card"
+      >
+        &#10060;
+        {{ item.itemCategory }}
+        {{ `R$ ${item.itemPrice}` }}
+      </button>
+      <div class="checkout-content" v-if="cart.length > 0">
+        <p>Taxa de instalação Grátis</p>
+        <h3>Total: {{ `R$ ${totalPrice}/mês` }}</h3>
       </div>
     </section>
   </div>
@@ -180,6 +185,10 @@ export default {
   flex-flow: row nowrap;
   height: 100vh;
 
+  @media (max-width: 680px) {
+    flex-flow: column nowrap;
+  }
+
   h1 {
     color: purple;
   }
@@ -211,6 +220,17 @@ export default {
           }
         }
       }
+
+      .phone-card {
+        width: 40%;
+        padding: 10px;
+        height: 45%;
+      }
+
+      .tv-card {
+        width: 40%;
+        height: 30%;
+      }
     }
   }
 
@@ -218,7 +238,23 @@ export default {
     @include fastDisplay(flex-start, column, nowrap);
     height: 100%;
     width: 50%;
-    border: 3px solid red;
+    position: relative;
+
+    h1 {
+      margin: 4.3% auto;
+    }
+
+    .cart-card {
+      width: 50%;
+      height: 15%;
+      margin: 5%;
+    }
+
+    .checkout-content {
+      position: absolute;
+      top: 80%;
+      right: 20%;
+    }
   }
 }
 </style>
