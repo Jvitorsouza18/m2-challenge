@@ -14,7 +14,6 @@
           {{ `${item.value} MEGA` }}
           <br />
           {{ `R$ ${item.price.toFixed(2)}` }}
-          +DETALHES
         </button>
       </div>
     </div>
@@ -57,7 +56,7 @@
           {{ `R$ ${item.itemPrice}` }}
         </button>
       </div>
-      <div v-if="cart.length <= 0">
+      <div v-if="cart.length > 0">
         <p>Taxa de instalação Grátis</p>
         <h3>Total: {{ `R$ ${totalPrice}/mês` }}</h3>
       </div>
