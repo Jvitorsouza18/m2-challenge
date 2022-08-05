@@ -2,50 +2,53 @@
   <div class="container">
     <section class="container-left">
       <div class="plans-container">
-        <div class="card internet-content">
+        <div class="card card-content">
           <h1>Internet</h1>
           <p>Selecione um plano de internet para continuar</p>
+          <div class="card-box">
+            <button
+              v-for="item in internetInfo"
+              :key="item.id"
+              class="internet-card"
+              v-on:click="
+                addToCart(item.price, item.value, item.category),
+                  getInternetPrice(item.price)
+              "
+              :disabled="buttonDisables('internet')"
+            >
+              {{ `${item.value} MEGA` }}
+              <br />
+              {{ `R$ ${item.price.toFixed(2)}` }}
+            </button>
+          </div>
+        </div>
+        <div class="card card-content">
+          <h1>Fixo</h1>
+          <p>Agora escolha seu pacote de telefone fixo</p>
           <button
-            v-for="item in internetInfo"
+            v-for="item in phoneInfo"
             :key="item.id"
-            class="card-box"
-            v-on:click="
-              addToCart(item.price, item.value, item.category),
-                getInternetPrice(item.price)
-            "
-            :disabled="buttonDisables('internet')"
+            v-on:click="addToCart(item.price, item.value, item.category)"
+            :disabled="internetPrice === 0 || buttonDisables('phone')"
           >
-            {{ `${item.value} MEGA` }}
+            {{ `${item.value.toUpperCase()} BRASIL` }}
+            <br />
             {{ `R$ ${item.price.toFixed(2)}` }}
           </button>
         </div>
-        <div class="card">
-          <h1>Fixo</h1>
-          <p>Agora escolha seu pacote de telefone fixo</p>
-          <div v-for="item in phoneInfo" :key="item.id">
-            <button
-              v-on:click="addToCart(item.price, item.value, item.category)"
-              :disabled="internetPrice === 0 || buttonDisables('phone')"
-            >
-              {{ `${item.value.toUpperCase()} BRASIL` }}
-              <br />
-              {{ `R$ ${item.price.toFixed(2)}` }}
-            </button>
-          </div>
-        </div>
-        <div class="card">
+        <div class="card card-content">
           <h1>TV</h1>
           <p>Selecione um plano de tv para finalizar</p>
-          <div v-for="item in tvInfo" :key="item.id">
-            <button
-              v-on:click="addToCart(item.price, item.value, item.category)"
-              :disabled="internetPrice === 0 || buttonDisables('tv')"
-            >
-              {{ `${item.value}` }}
-              <br />
-              {{ `R$ ${item.price.toFixed(2)}` }}
-            </button>
-          </div>
+          <button
+            v-for="item in tvInfo"
+            :key="item.id"
+            v-on:click="addToCart(item.price, item.value, item.category)"
+            :disabled="internetPrice === 0 || buttonDisables('tv')"
+          >
+            {{ `${item.value}` }}
+            <br />
+            {{ `R$ ${item.price.toFixed(2)}` }}
+          </button>
         </div>
       </div>
     </section>
@@ -195,16 +198,17 @@ export default {
     .card {
       width: 100%;
       height: 30%;
-      border: 3px solid red;
 
-      .internet-content {
+      &.card-content {
         @include fastDisplay(space-evenly, column, wrap);
-      }
-      .card-box {
-        border: 2px solid blue;
-        .internet-card {
-          width: 40%;
-          border: 2px solid blue;
+        .card-box {
+          height: 50%;
+          @include fastDisplay(space-evenly, row, wrap);
+          .internet-card {
+            width: 40%;
+
+            height: 45%;
+          }
         }
       }
     }
