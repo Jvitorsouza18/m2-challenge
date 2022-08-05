@@ -57,7 +57,6 @@
     <section class="container-right cart">
       <h1 class="cart-h1">Cart</h1>
       <p v-if="cart.length === 0">Carrinho está vazio</p>
-
       <button
         v-for="(item, index) in cart"
         :key="index"
@@ -196,7 +195,7 @@ export default {
     .container-left {
       @include fastDisplay(flex-start, column, nowrap);
       width: 100%;
-      height: 100%;
+      height: 70%;
 
       .plans-container {
         @include fastDisplay(flex-start, column, nowrap);
@@ -211,10 +210,15 @@ export default {
 
         &.card-content {
           @include fastDisplay(space-evenly, column, wrap);
+
           .card-box {
-            height: 50%;
             @include fastDisplay(space-evenly, column, wrap);
+            padding-top: 5%;
+            height: 50%;
+
             .internet-card {
+              padding: 2%;
+              margin: 4%;
               width: 40%;
 
               height: 45%;
@@ -223,15 +227,44 @@ export default {
         }
 
         .phone-card {
+          margin: 4%;
           width: 40%;
           padding: 10px;
           height: 45%;
         }
 
         .tv-card {
+          margin: 4%;
           width: 40%;
           height: 30%;
+          padding: 10px;
         }
+      }
+    }
+
+    .container-right {
+      @include fastDisplay(flex-start, column, nowrap);
+      height: 100%;
+      width: 100%;
+
+      h1 {
+        margin: 4.3% auto;
+      }
+
+      .cart-card {
+        width: 40%;
+        height: 20%;
+        margin: 5%;
+      }
+    }
+    .cart {
+      width: 100%;
+      @include fastDisplay(center, column, nowrap);
+
+      .checkout-content {
+        @include fastDisplay(center, column, nowrap);
+        overflow: hidden;
+        width: 70%;
       }
     }
   }
@@ -269,7 +302,7 @@ export default {
       }
 
       .phone-card {
-        width: 40%;
+        width: 44%;
         padding: 10px;
         height: 45%;
       }
@@ -292,15 +325,16 @@ export default {
     }
 
     .cart-card {
-      width: 40%;
-      height: 10%;
-      margin: 5%;
+      width: 52%;
+      height: 16%;
+      margin: 4%;
+      padding: 4%;
     }
 
     .checkout-content {
-      position: absolute;
       top: 84%;
       right: 20%;
+      margin-bottom: 10%;
     }
   }
 }
