@@ -8,7 +8,7 @@ Para começar clone o projeto usando `git clone git@github.com:Jvitorsouza18/m2-
 
  -> Acesse o diretório `m2-challenge-front` <br>
  -> Rode o comando `npm install` <br>
- -> Rode o comando `npm run dev`
+ -> Rode o comando `npm run dev` <br>
  -> Acesse a porta indicada no seu terminal
  
  ### Para executar o projeto usando Docker:
